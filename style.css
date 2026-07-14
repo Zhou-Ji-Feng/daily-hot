@@ -40,6 +40,12 @@ body {
  margin-bottom: 0.8rem;
 }
 
+.logo-date {
+ font-weight: 400;
+ color: var(--text-light);
+ font-size: 1.6rem;
+}
+
 .meta-info {
  font-size: 0.9rem;
  color: var(--text-light);
