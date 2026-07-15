@@ -14,7 +14,6 @@
  <div class="logo">📡 每日热点 <span class="logo-date">| 2026-07-15</span></div>
  <p class="meta-info">来源：新闻30分 · 联合早报 · 三联 · 豆瓣 · 知乎 · Nature · Science · New Scientist · The Guardian</p>
  </header>
-
  <main class="content-container">
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">📍</span> 中新要闻</h2>
@@ -220,122 +219,93 @@
 </article>
 </section>
  </main>
-
  <footer class="main-footer">
-  <div class="thought-actions">
-    <button class="btn-export">📥 导出全部感想</button>
-  </div>
+  <div class="thought-actions"><button class="btn-export">📥 导出全部感想</button></div>
 <p class="summary-meta">✨ 9 源 81 条中精选（新周刊今日未更新）</p>
- <div class="footer-links">
- <a href="index.html" class="back-link">← 查看所有日期</a>
- </div>
+ <div class="footer-links"><a href="index.html" class="back-link">← 查看所有日期</a></div>
  </footer>
-
-<div id="toast" class="toast">✅ 已储存</div>
-
+<div id="toast" class="toast"></div>
 <script>
-(function(){
-  var KEY = 'dailyhot_thoughts_' + '2026-07-15';
-
-  function load() {
-    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; }
-  }
-
-  function save(thoughts) {
-    localStorage.setItem(KEY, JSON.stringify(thoughts));
-  }
-
-  function restore() {
+(function(){{
+  var KEY = 'dailyh…hts_' + '2026-07-15';
+  function load() {{ try {{ return JSON.parse(localStorage.getItem(KEY)) || {{}}; }} catch(e) {{ return {{}}; }} }}
+  function save(thoughts) {{ localStorage.setItem(KEY, JSON.stringify(thoughts)); }}
+  function restore() {{
     var thoughts = load();
-    for (var idx in thoughts) {
+    for (var idx in thoughts) {{
       var input = document.getElementById('ti-' + idx);
       var btn = document.getElementById('ts-' + idx);
-      if (input && thoughts[idx]) {
+      if (input && thoughts[idx]) {{
         input.value = thoughts[idx];
-        if (btn) { btn.textContent = '\u2713'; btn.classList.add('saved'); }
-      }
-    }
-  }
-
+        if (btn) {{ btn.textContent = '✓'; btn.classList.add('saved'); }}
+      }}
+    }}
+  }}
   var timer = null;
-  function showToast(msg) {
+  function showToast(msg) {{
     var t = document.getElementById('toast');
     if (!t) return;
     t.textContent = msg;
     t.className = 'toast show';
     if (timer) clearTimeout(timer);
-    timer = setTimeout(function() { t.className = 'toast hide'; }, 1500);
-  }
-
-  function ready(fn) {
-    if (document.readyState !== 'loading') { fn(); }
-    else { document.addEventListener('DOMContentLoaded', fn); }
-  }
-
-  ready(function() {
+    timer = setTimeout(function() {{ t.className = 'toast hide'; }}, 1500);
+  }}
+  function ready(fn) {{
+    if (document.readyState !== 'loading') {{ fn(); }}
+    else {{ document.addEventListener('DOMContentLoaded', fn); }}
+  }}
+  ready(function() {{
     restore();
-
-    // 绑定所有储存按钮
     var btns = document.querySelectorAll('.btn-thought-save');
-    for (var i = 0; i < btns.length; i++) {
-      (function(btn) {
-        btn.addEventListener('click', function() {
+    for (var i = 0; i < btns.length; i++) {{
+      (function(btn) {{
+        btn.addEventListener('click', function() {{
           var idx = btn.id.replace('ts-', '');
           var input = document.getElementById('ti-' + idx);
           if (!input) return;
           var feeling = (input.value || '').trim();
-          if (!feeling) { input.focus(); return; }
+          if (!feeling) {{ input.focus(); return; }}
           var thoughts = load();
           thoughts[idx] = feeling;
           save(thoughts);
-          // sync to local collector
-          try {
-            fetch('http://127.0.0.1:3030/save', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                date: '2026-07-15',
-                title: input.dataset.title || '',
-                feeling: feeling
-              })
-            }).catch(function(){});
-          } catch(e) {}
-
-                    btn.textContent = '\u2713';
-          btn.className += ' saved';
-          showToast('\u2705已儲存');
-        });
-      })(btns[i]);
-    }
-
-    // 导出按钮
+          try {{
+            navigator.sendBeacon('http://127.0.0.1:3030/save', JSON.stringify({{
+              date: '2026-07-15',
+              title: input.dataset.title || '',
+              feeling: feeling
+            }}));
+          }} catch(e) {{}}
+          btn.textContent = '✓';
+          btn.classList.add('saved');
+          showToast('已储存');
+        }});
+      }})(btns[i]);
+    }}
     var exportBtn = document.querySelector('.btn-export');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', function() {
+    if (exportBtn) {{
+      exportBtn.addEventListener('click', function() {{
         var thoughts = load();
-        var md = '# \u6bcf\u65e5\u70ed\u70b9\u611f\u60f3 \u2014 2026-07-15';
-        md += '\n\n| \u65e5\u671f | \u70ed\u70b9\u6807\u9898 | \u611f\u60f3 |';
-        md += '\n|---|---|---|\n';
-        for (var idx in thoughts) {
-          var input = document.getElementById('ti-' + idx);
-          if (!input || !thoughts[idx]) continue;
-          var title = (input.dataset.title || '').replace(/\|/g, '\\|');
-          var feeling = thoughts[idx].replace(/\|/g, '\\|');
-          md += '| 2026-07-15 | ' + title + ' | ' + feeling + ' |\n';
-        }
-        var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        var md = '# 每日热点感想 — 2026-07-15\n\n| 日期 | 热点标题 | 感想 |\n|---|---|---|\n';
+        for (var idx in thoughts) {{
+          var inp = document.getElementById('ti-' + idx);
+          if (!inp || !thoughts[idx]) continue;
+          var t = (inp.dataset.title || '').replace(/\|/g, '\\|');
+          var f = thoughts[idx].replace(/\|/g, '\\|');
+          md += '| 2026-07-15 | ' + t + ' | ' + f + ' |\n';
+        }}
+        var blob = new Blob([md], {{ type: 'text/markdown;charset=utf-8' }});
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = '\u611f\u60f3_2026-07-15.md';
+        a.download = '感想_2026-07-15.md';
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(a.href);
-        showToast('\ud83d\udce5已下\u8f7d');
-      });
-    }
-  });
-})();
+        showToast('已下载');
+      }});
+    }}
+  }});
+}})();
 </script>
 </body>
 </html>
