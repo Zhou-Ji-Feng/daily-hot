@@ -252,7 +252,7 @@
       var btn = document.getElementById('ts-' + idx);
       if (input && thoughts[idx]) {
         input.value = thoughts[idx];
-        if (btn) { btn.textContent = '\u2713'; btn.className += ' saved'; }
+        if (btn) { btn.textContent = '\u2713'; btn.classList.add('saved'); }
       }
     }
   }
@@ -290,7 +290,7 @@
           save(thoughts);
           btn.textContent = '\u2713';
           btn.className += ' saved';
-          showToast('\u2705 \u5df2 \u5132 \u5b58');
+          showToast('\u2705已儲存');
         });
       })(btns[i]);
     }
@@ -318,7 +318,7 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(a.href);
-        showToast('\ud83d\udce5 \u5df2 \u4e0b\u8f7d');
+        showToast('\ud83d\udce5已下\u8f7d');
       });
     }
   });
