@@ -19,7 +19,7 @@
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">📍</span> 中新要闻</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="0">
   <div class="card-header">
    <span class="media-badge badge-cctv">新闻30分</span>
    <h3 class="news-title">受台风&quot;巴威&quot;影响，东北多地高铁停运</h3>
@@ -30,8 +30,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-0" placeholder="写点感想…" maxlength="500" data-title="受台风&quot;巴威&quot;影响，东北多地高铁停运" data-source="新闻30分">
+    <button class="btn-thought-save" id="ts-0" onclick="saveThought(0)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="1">
   <div class="card-header">
    <span class="media-badge badge-zaobao">联合早报</span>
    <h3 class="news-title">国大医院试点智能手表测体征，可比人工提早两小时发现异常</h3>
@@ -42,12 +46,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-1" placeholder="写点感想…" maxlength="500" data-title="国大医院试点智能手表测体征，可比人工提早两小时发现异常" data-source="联合早报">
+    <button class="btn-thought-save" id="ts-1" onclick="saveThought(1)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">🌍</span> 全球时政</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="2">
   <div class="card-header">
    <span class="media-badge badge-cctv">新闻30分</span>
    <h3 class="news-title">国际简讯：特朗普恢复对伊港口封锁，美参议员格雷厄姆离世</h3>
@@ -58,8 +66,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-2" placeholder="写点感想…" maxlength="500" data-title="国际简讯：特朗普恢复对伊港口封锁，美参议员格雷厄姆离世" data-source="新闻30分">
+    <button class="btn-thought-save" id="ts-2" onclick="saveThought(2)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="3">
   <div class="card-header">
    <span class="media-badge badge-guardian">The Guardian</span>
    <h3 class="news-title">曼谷酒吧火灾30人死亡：出口被锁死，系17年最严重火灾</h3>
@@ -70,12 +82,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-3" placeholder="写点感想…" maxlength="500" data-title="曼谷酒吧火灾30人死亡：出口被锁死，系17年最严重火灾" data-source="The Guardian">
+    <button class="btn-thought-save" id="ts-3" onclick="saveThought(3)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">🤖</span> 科技前沿</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="4">
   <div class="card-header">
    <span class="media-badge badge-nature">Nature</span>
    <h3 class="news-title">AI 模型监管：一个国家的恐惧，全世界的枷锁</h3>
@@ -86,8 +102,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-4" placeholder="写点感想…" maxlength="500" data-title="AI 模型监管：一个国家的恐惧，全世界的枷锁" data-source="Nature">
+    <button class="btn-thought-save" id="ts-4" onclick="saveThought(4)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="5">
   <div class="card-header">
    <span class="media-badge badge-science">Science</span>
    <h3 class="news-title">AI 自主合成了非人类编码语言，学界定性：概率重组，非真正创造力</h3>
@@ -98,8 +118,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-5" placeholder="写点感想…" maxlength="500" data-title="AI 自主合成了非人类编码语言，学界定性：概率重组，非真正创造力" data-source="Science">
+    <button class="btn-thought-save" id="ts-5" onclick="saveThought(5)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="6">
   <div class="card-header">
    <span class="media-badge badge-newscientist">New Scientist</span>
    <h3 class="news-title">海蠕虫颚部发现全新&quot;生物金属&quot;材料</h3>
@@ -110,12 +134,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-6" placeholder="写点感想…" maxlength="500" data-title="海蠕虫颚部发现全新&quot;生物金属&quot;材料" data-source="New Scientist">
+    <button class="btn-thought-save" id="ts-6" onclick="saveThought(6)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">💬</span> 热议话题</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="7">
   <div class="card-header">
    <span class="media-badge badge-zhihu">知乎热榜</span>
    <h3 class="news-title">伴娘遭婚闹被抛摔致伤残，9 人被判赔 23 万元</h3>
@@ -126,12 +154,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-7" placeholder="写点感想…" maxlength="500" data-title="伴娘遭婚闹被抛摔致伤残，9 人被判赔 23 万元" data-source="知乎热榜">
+    <button class="btn-thought-save" id="ts-7" onclick="saveThought(7)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">📰</span> 文化与社会</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="8">
   <div class="card-header">
    <span class="media-badge badge-lifeweek">三联生活周刊</span>
    <h3 class="news-title">弑母杀妹案14年后改编电影《爸爸》，拿下香港金像奖三项大奖</h3>
@@ -142,12 +174,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-8" placeholder="写点感想…" maxlength="500" data-title="弑母杀妹案14年后改编电影《爸爸》，拿下香港金像奖三项大奖" data-source="三联生活周刊">
+    <button class="btn-thought-save" id="ts-8" onclick="saveThought(8)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">🎬</span> 影视与阅读</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="9">
   <div class="card-header">
    <span class="media-badge badge-douban">豆瓣·电影</span>
    <h3 class="news-title">《女士优先》 ⭐6.3</h3>
@@ -158,8 +194,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-9" placeholder="写点感想…" maxlength="500" data-title="《女士优先》 ⭐6.3" data-source="豆瓣·电影">
+    <button class="btn-thought-save" id="ts-9" onclick="saveThought(9)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="10">
   <div class="card-header">
    <span class="media-badge badge-douban">豆瓣·国产剧</span>
    <h3 class="news-title">《醉梦》 ⭐8.5</h3>
@@ -170,8 +210,12 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-10" placeholder="写点感想…" maxlength="500" data-title="《醉梦》 ⭐8.5" data-source="豆瓣·国产剧">
+    <button class="btn-thought-save" id="ts-10" onclick="saveThought(10)">储存</button>
+  </div>
 </article>
-<article class="hot-card">
+<article class="hot-card" data-idx="11">
   <div class="card-header">
    <span class="media-badge badge-douban">豆瓣·新书速递</span>
    <h3 class="news-title">《间奏曲》 [爱尔兰] 萨莉·鲁尼 ⭐7.6</h3>
@@ -182,12 +226,16 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-11" placeholder="写点感想…" maxlength="500" data-title="《间奏曲》 [爱尔兰] 萨莉·鲁尼 ⭐7.6" data-source="豆瓣·新书速递">
+    <button class="btn-thought-save" id="ts-11" onclick="saveThought(11)">储存</button>
+  </div>
 </article>
 </section>
 <section class="category-section">
   <h2 class="category-title"><span class="category-icon">🩺</span> 公共健康</h2>
 
-<article class="hot-card">
+<article class="hot-card" data-idx="12">
   <div class="card-header">
    <span class="media-badge badge-nature">Nature</span>
    <h3 class="news-title">非洲应对埃博拉的方式，给全球公卫上了一课</h3>
@@ -198,15 +246,119 @@
     阅读原文 <span class="arrow">→</span>
    </a>
   </div>
+  <div class="thought-row">
+    <input type="text" class="thought-input" id="ti-12" placeholder="写点感想…" maxlength="500" data-title="非洲应对埃博拉的方式，给全球公卫上了一课" data-source="Nature">
+    <button class="btn-thought-save" id="ts-12" onclick="saveThought(12)">储存</button>
+  </div>
 </article>
 </section>
  </main>
 
  <footer class="main-footer">
+  <div class="thought-actions">
+    <button class="btn-export" onclick="exportThoughts()">📥 导出全部感想</button>
+  </div>
  <p class="summary-meta">✨ 9 源 81 条中精选（新周刊今日未更新）</p>
  <div class="footer-links">
  <a href="index.html" class="back-link">← 查看所有日期</a>
  </div>
  </footer>
+
+<div id="toast" class="toast">✅ 已储存</div>
+
+<script>
+// ===== localStorage 感想存储 =====
+const STORAGE_KEY = 'dailyhot_thoughts_' + '2026-07-15';
+
+function loadThoughts() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
+}
+
+function saveThoughts(thoughts) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(thoughts));
+}
+
+// 页面加载时恢复已保存的感想
+(function restoreThoughts() {
+  const thoughts = loadThoughts();
+  for (const [idx, text] of Object.entries(thoughts)) {
+    const input = document.getElementById('ti-' + idx);
+    const btn = document.getElementById('ts-' + idx);
+    if (input && text) {
+      input.value = text;
+      if (btn) { btn.textContent = '✓ 已存'; btn.classList.add('saved'); }
+    }
+  }
+})();
+
+// Toast
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = 'toast hide'; }, 1500);
+}
+
+// 保存感想
+function saveThought(idx) {
+  const input = document.getElementById('ti-' + idx);
+  const btn = document.getElementById('ts-' + idx);
+  const feeling = input.value.trim();
+  if (!feeling) { input.focus(); return; }
+
+  // 存到 localStorage
+  const thoughts = loadThoughts();
+  thoughts[idx] = feeling;
+  saveThoughts(thoughts);
+
+  btn.textContent = '✓ 已存';
+  btn.classList.add('saved');
+  showToast('✅ 已储存');
+
+  // 尝试同步到本地服务器（静默，失败不影响用户操作）
+  try {
+    fetch('http://127.0.0.1:3030/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        date: '2026-07-15',
+        title: input.dataset.title,
+        feeling: feeling
+      })
+    }).catch(function(){});
+  } catch(e) {}
+}
+
+// 导出全部感想
+function exportThoughts() {
+  const thoughts = loadThoughts();
+  const items = document.querySelectorAll('.hot-card');
+  let md = '# 每日热点感想 — 2026-07-15
+
+| 日期 | 热点标题 | 感想 |
+|---|---|---|
+';
+
+  for (const [idx, text] of Object.entries(thoughts)) {
+    const input = document.getElementById('ti-' + idx);
+    if (!input) continue;
+    const title = (input.dataset.title || '').replace(/\|/g, '\|');
+    const feeling = text.replace(/\|/g, '\|').replace(/
+/g, ' ');
+    md += '| 2026-07-15 | ' + title + ' | ' + feeling + ' |\n';
+  }
+
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '感想_2026-07-15.md';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('📥 已下载 Markdown 文件');
+}
+</script>
+
 </body>
 </html>
