@@ -201,6 +201,8 @@ body {
 .badge-newscientist { background-color: #fff0f6; color: #c41d7f; }
 .badge-new-weekly { background-color: #fffbe6; color: #d4b106; }
 .badge-lifeweek { background-color: #e6fffb; color: #08979c; }
+.badge-douban { background-color: #f0f5e6; color: #3b6600; }
+.badge-zhihu { background-color: #e6f0ff; color: #0052d9; }
 
 .news-title {
  font-size: 1.1rem;
