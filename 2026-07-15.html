@@ -226,74 +226,74 @@
  </footer>
 <div id="toast" class="toast"></div>
 <script>
-(function(){{
+(function(){
   var KEY = 'dailyh…hts_' + '2026-07-15';
-  function load() {{ try {{ return JSON.parse(localStorage.getItem(KEY)) || {{}}; }} catch(e) {{ return {{}}; }} }}
-  function save(thoughts) {{ localStorage.setItem(KEY, JSON.stringify(thoughts)); }}
-  function restore() {{
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; } }
+  function save(thoughts) { localStorage.setItem(KEY, JSON.stringify(thoughts)); }
+  function restore() {
     var thoughts = load();
-    for (var idx in thoughts) {{
+    for (var idx in thoughts) {
       var input = document.getElementById('ti-' + idx);
       var btn = document.getElementById('ts-' + idx);
-      if (input && thoughts[idx]) {{
+      if (input && thoughts[idx]) {
         input.value = thoughts[idx];
-        if (btn) {{ btn.textContent = '✓'; btn.classList.add('saved'); }}
-      }}
-    }}
-  }}
+        if (btn) { btn.textContent = '✓'; btn.classList.add('saved'); }
+      }
+    }
+  }
   var timer = null;
-  function showToast(msg) {{
+  function showToast(msg) {
     var t = document.getElementById('toast');
     if (!t) return;
     t.textContent = msg;
     t.className = 'toast show';
     if (timer) clearTimeout(timer);
-    timer = setTimeout(function() {{ t.className = 'toast hide'; }}, 1500);
-  }}
-  function ready(fn) {{
-    if (document.readyState !== 'loading') {{ fn(); }}
-    else {{ document.addEventListener('DOMContentLoaded', fn); }}
-  }}
-  ready(function() {{
+    timer = setTimeout(function() { t.className = 'toast hide'; }, 1500);
+  }
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+  ready(function() {
     restore();
     var btns = document.querySelectorAll('.btn-thought-save');
-    for (var i = 0; i < btns.length; i++) {{
-      (function(btn) {{
-        btn.addEventListener('click', function() {{
+    for (var i = 0; i < btns.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() {
           var idx = btn.id.replace('ts-', '');
           var input = document.getElementById('ti-' + idx);
           if (!input) return;
           var feeling = (input.value || '').trim();
-          if (!feeling) {{ input.focus(); return; }}
+          if (!feeling) { input.focus(); return; }
           var thoughts = load();
           thoughts[idx] = feeling;
           save(thoughts);
-          try {{
-            navigator.sendBeacon('http://127.0.0.1:3030/save', JSON.stringify({{
+          try {
+            navigator.sendBeacon('http://127.0.0.1:3030/save', JSON.stringify({
               date: '2026-07-15',
               title: input.dataset.title || '',
               feeling: feeling
-            }}));
-          }} catch(e) {{}}
+            }));
+          } catch(e) {}
           btn.textContent = '✓';
           btn.classList.add('saved');
           showToast('已储存');
-        }});
-      }})(btns[i]);
-    }}
+        });
+      })(btns[i]);
+    }
     var exportBtn = document.querySelector('.btn-export');
-    if (exportBtn) {{
-      exportBtn.addEventListener('click', function() {{
+    if (exportBtn) {
+      exportBtn.addEventListener('click', function() {
         var thoughts = load();
         var md = '# 每日热点感想 — 2026-07-15\n\n| 日期 | 热点标题 | 感想 |\n|---|---|---|\n';
-        for (var idx in thoughts) {{
+        for (var idx in thoughts) {
           var inp = document.getElementById('ti-' + idx);
           if (!inp || !thoughts[idx]) continue;
           var t = (inp.dataset.title || '').replace(/\|/g, '\\|');
           var f = thoughts[idx].replace(/\|/g, '\\|');
           md += '| 2026-07-15 | ' + t + ' | ' + f + ' |\n';
-        }}
-        var blob = new Blob([md], {{ type: 'text/markdown;charset=utf-8' }});
+        }
+        var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
         var a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = '感想_2026-07-15.md';
@@ -302,10 +302,10 @@
         document.body.removeChild(a);
         URL.revokeObjectURL(a.href);
         showToast('已下载');
-      }});
-    }}
-  }});
-}})();
+      });
+    }
+  });
+})();
 </script>
 </body>
 </html>
