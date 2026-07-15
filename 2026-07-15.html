@@ -288,7 +288,20 @@
           var thoughts = load();
           thoughts[idx] = feeling;
           save(thoughts);
-          btn.textContent = '\u2713';
+          // sync to local collector
+          try {
+            fetch('http://127.0.0.1:3030/save', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                date: '2026-07-15',
+                title: input.dataset.title || '',
+                feeling: feeling
+              })
+            }).catch(function(){});
+          } catch(e) {}
+
+                    btn.textContent = '\u2713';
           btn.className += ' saved';
           showToast('\u2705已儲存');
         });
