@@ -335,11 +335,7 @@ function saveThought(idx) {
 function exportThoughts() {
   const thoughts = loadThoughts();
   const items = document.querySelectorAll('.hot-card');
-  let md = '# 每日热点感想 — 2026-07-15
-
-| 日期 | 热点标题 | 感想 |
-|---|---|---|
-';
+  let md = '# 每日热点感想 — 2026-07-15\n\n| 日期 | 热点标题 | 感想 |\n|---|---|---|\n';
 
   for (const [idx, text] of Object.entries(thoughts)) {
     const input = document.getElementById('ti-' + idx);
