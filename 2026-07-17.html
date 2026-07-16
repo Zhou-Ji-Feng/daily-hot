@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>今日热点 · 2026-07-17 · 每日热点</title>
+ <link rel="stylesheet" href="style.css">
+ <meta property="og:title" content="今日热点 · 2026-07-17">
+ <meta property="og:description" content="新闻30分 · 联合早报 · The Guardian · Science · New Scientist · 三联 · 知乎 · 豆瓣 · Nature">
+ <meta property="og:type" content="article">
+</head>
+<body>
+ <header class="main-header">
+ <div class="logo">📡 每日热点 <span class="logo-date">| 2026-07-17</span></div>
+ <p class="meta-info">来源：新闻30分 · 联合早报 · The Guardian · Science · New Scientist · 三联 · 知乎 · 豆瓣 · Nature</p>
+ </header>
+ <main class="content-container">
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">📍</span> 中新要闻</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">🌍</span> 全球时政</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">🤖</span> 科技前沿</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">💬</span> 热议话题</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">📰</span> 文化与社会</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">🎬</span> 影视与阅读</h2>
+
+</section>
+<section class="category-section">
+  <h2 class="category-title"><span class="category-icon">🩺</span> 公共健康</h2>
+
+</section>
+ </main>
+ <footer class="main-footer">
+<p class="summary-meta">✨ 9 源 65条（池）精选 12 条</p>
+ <div class="footer-links"><a href="index.html" class="back-link">← 查看所有日期</a></div>
+ </footer>
+<div id="toast" class="toast"></div>
+<script>
+(function(){
+  var KEY = 'dailyh…hts_' + '2026-07-17';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) { return {}; } }
+  function save(thoughts) { localStorage.setItem(KEY, JSON.stringify(thoughts)); }
+  function restore() {
+    var thoughts = load();
+    for (var idx in thoughts) {
+      var input = document.getElementById('ti-' + idx);
+      var btn = document.getElementById('ts-' + idx);
+      if (input && thoughts[idx]) {
+        input.value = thoughts[idx];
+        if (btn) { btn.textContent = '✓'; btn.classList.add('saved'); }
+      }
+    }
+  }
+  var timer = null;
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = 'toast show';
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function() { t.className = 'toast hide'; }, 1500);
+  }
+  function ready(fn) {
+    if (document.readyState !== 'loading') { fn(); }
+    else { document.addEventListener('DOMContentLoaded', fn); }
+  }
+  ready(function() {
+    restore();
+    var btns = document.querySelectorAll('.btn-thought-save');
+    for (var i = 0; i < btns.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() {
+          var idx = btn.id.replace('ts-', '');
+          var input = document.getElementById('ti-' + idx);
+          if (!input) return;
+          var feeling = (input.value || '').trim();
+          if (!feeling) { input.focus(); return; }
+          var thoughts = load();
+          thoughts[idx] = feeling;
+          save(thoughts);
+          try {
+            navigator.sendBeacon('https://thoughts-sync.luo-yi07.workers.dev/save', JSON.stringify({
+              date: '2026-07-17',
+              title: input.dataset.title || '',
+              feeling: feeling
+            }));
+          } catch(e) {}
+          btn.textContent = '✓';
+          btn.classList.add('saved');
+          showToast('已储存');
+        });
+      })(btns[i]);
+    }
+
+  });
+})();
+</script>
+</body>
+</html>
