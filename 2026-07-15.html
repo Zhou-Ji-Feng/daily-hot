@@ -208,7 +208,7 @@
           thoughts[idx] = feeling;
           save(thoughts);
           try {
-            navigator.sendBeacon('http://127.0.0.1:3030/save', JSON.stringify({
+            navigator.sendBeacon('https://thoughts-sync.luo-yi07.workers.dev/save', JSON.stringify({
               date: '2026-07-15',
               title: input.dataset.title || '',
               feeling: feeling
