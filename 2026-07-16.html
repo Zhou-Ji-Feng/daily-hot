@@ -159,8 +159,7 @@
 </section>
  </main>
  <footer class="main-footer">
-  <div class="thought-actions"><button class="btn-export">📥 导出全部感想</button></div>
-<p class="summary-meta">✨ 8 源 12 条中精选</p>
+<p class="summary-meta">✨ 8 源 65条（池）精选 12 条</p>
  <div class="footer-links"><a href="index.html" class="back-link">← 查看所有日期</a></div>
  </footer>
 <div id="toast" class="toast"></div>
@@ -220,29 +219,7 @@
         });
       })(btns[i]);
     }
-    var exportBtn = document.querySelector('.btn-export');
-    if (exportBtn) {
-      exportBtn.addEventListener('click', function() {
-        var thoughts = load();
-        var md = '# 每日热点感想 — 2026-07-16\n\n| 日期 | 热点标题 | 感想 |\n|---|---|---|\n';
-        for (var idx in thoughts) {
-          var inp = document.getElementById('ti-' + idx);
-          if (!inp || !thoughts[idx]) continue;
-          var t = (inp.dataset.title || '').replace(/\|/g, '\\|');
-          var f = thoughts[idx].replace(/\|/g, '\\|');
-          md += '| 2026-07-16 | ' + t + ' | ' + f + ' |\n';
-        }
-        var blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
-        var a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = '感想_2026-07-16.md';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(a.href);
-        showToast('已下载');
-      });
-    }
+
   });
 })();
 </script>
