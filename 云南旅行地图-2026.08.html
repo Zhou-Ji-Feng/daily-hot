@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🗺️ 云南旅行地图 2026.08 · 昆明→香格里拉</title>
+<style>
+  html, body { margin: 0; height: 100%; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  #map { height: 100vh; width: 100%; }
+
+  .title-box {
+    position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+    background: rgba(255,255,255,.95);
+    padding: 8px 22px; border-radius: 12px; z-index: 2000;
+    font: bold 16px 'PingFang SC', sans-serif; color: #1f2937;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .title-box .sub { font: 500 12px 'PingFang SC', sans-serif; color: #9ca3af; }
+
+  /* 图钉 */
+  .pin-wrap { position: relative; width: 34px; height: 44px; }
+  .pin-wrap .pin {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 30px; height: 30px; border-radius: 50% 50% 50% 0;
+    background: var(--pin); transform: translateX(-50%) rotate(-45deg);
+    border: 2.5px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,.35);
+    box-sizing: border-box;
+  }
+  .pin-wrap .pin-num {
+    position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    color: #fff; font: bold 13px 'PingFang SC', sans-serif; z-index: 2;
+    text-shadow: 0 1px 2px rgba(0,0,0,.3);
+  }
+  .pin-wrap:hover { transform: scale(1.15) translateY(-2px); transition: transform .2s; }
+  .pin-wrap { transition: transform .2s; }
+
+  /* 弹窗 */
+  .amap-info-content { padding: 0 !important; border-radius: 12px; overflow: hidden; }
+  .popup-card { font-family: 'PingFang SC', sans-serif; min-width: 210px; max-width: 260px; padding: 12px 14px; }
+  .popup-title { display: flex; align-items: center; gap: 8px; font-size: 15px; margin-bottom: 2px; }
+  .popup-num { width: 22px; height: 22px; border-radius: 50%; color: #fff;
+    font: bold 12px/22px sans-serif; text-align: center; flex-shrink: 0; }
+  .popup-en { font-size: 11px; color: #9ca3af; margin-bottom: 6px; }
+  .popup-row { font-size: 12px; color: #374151; margin: 3px 0; line-height: 1.5; }
+  .popup-addr { font-size: 10px; color: #b0b7c3; margin-top: 6px; border-top: 1px dashed #e5e7eb; padding-top: 4px; }
+
+  /* 图例 */
+  .legend {
+    background: rgba(255,255,255,.95);
+    border-radius: 10px; padding: 12px 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    border: 1px solid #e5e7eb;
+    font: 13px 'PingFang SC', sans-serif;
+  }
+  .legend b { display: block; margin-bottom: 8px; color: #374151; font-size: 13px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 6px;
+    margin: 1px -6px; border-radius: 6px; cursor: pointer; transition: background .15s; }
+  .legend-item:hover { background: #f3f4f6; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-count { font-size: 11px; color: #9ca3af; margin-left: auto; }
+
+  .route-toggle {
+    background: rgba(255,255,255,.95); border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    padding: 6px 12px; font: 12px 'PingFang SC', sans-serif;
+    cursor: pointer; border: 1px solid #e5e7eb; transition: all .15s;
+  }
+  .route-toggle:hover { background: #f9fafb; }
+  .route-toggle.off { opacity: .5; }
+
+  /* 搜索框 */
+  .search-box {
+    position: absolute; left: 12px; top: 70px; z-index: 2000; width: 240px;
+  }
+  .search-box input {
+    width: 100%; padding: 8px 12px; box-sizing: border-box;
+    border: 1px solid #e5e7eb; border-radius: 10px;
+    font: 13px 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08); outline: none;
+  }
+  .search-box input:focus { border-color: #4f8ff7; }
+  .amap-sug-wrap { border-radius: 10px !important; overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,.12) !important; }
+  .amap-sug-result { font: 13px 'PingFang SC', sans-serif !important; }
+  .amap-sug-item { padding: 8px 12px !important; }
+
+  /* 列表面板 */
+  .place-panel {
+    position: absolute; right: 12px; top: 110px; z-index: 2000; width: 250px;
+    background: rgba(255,255,255,.97); border-radius: 12px;
+    border: 1px solid #e5e7eb; box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    font: 13px 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    max-height: calc(100vh - 160px); display: flex; flex-direction: column;
+  }
+  .panel-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px; border-bottom: 1px solid #f0f0f0;
+    font-weight: bold; color: #374151; cursor: pointer; user-select: none;
+  }
+  .panel-toggle { color: #9ca3af; font-size: 12px; }
+  .panel-body { overflow-y: auto; padding: 6px 10px 10px; flex: 1; }
+  .panel-group {
+    display: flex; align-items: center; gap: 8px;
+    margin: 10px 0 4px; color: #6b7280; font-size: 12px; font-weight: bold;
+  }
+  .panel-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 6px; border-radius: 6px; cursor: pointer;
+    transition: background .15s;
+  }
+  .panel-item:hover { background: #f3f4f6; }
+  .panel-num {
+    width: 20px; height: 20px; border-radius: 50%; color: #fff;
+    font: bold 11px/20px sans-serif; text-align: center; flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+<div class="title-box">
+  🗺️ 云南旅行地图 · 2026.08
+  <span class="sub">昆明 → 大理 → 丽江 → 虎跳峡 → 香格里拉 · 18 个地点</span>
+</div>
+<div id="map"></div>
+<script src="https://webapi.amap.com/maps?v=2.0&key=4be3d7caeaebb5bdc5d0fafd48edf80e&plugin=AMap.Scale,AMap.ToolBar,AMap.AutoComplete"></script>
+<script>
+  var map = new AMap.Map('map', {
+    center: [100.3, 26.3], zoom: 7,
+    mapStyle: 'amap://styles/fresh',
+    viewMode: '2D'
+  });
+
+  var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -40) });
+
+  function showPopup(lat, lng, num, color, nameCn, nameEn, group, time, tips, addr) {
+    var popup = '<div class="popup-card">' +
+      '<div class="popup-title"><span class="popup-num" style="background:' + color + '">' + num + '</span><b>' + nameCn + '</b></div>' +
+      '<div class="popup-en">' + nameEn + '</div>' +
+      '<div class="popup-row">📍 站点：' + group + '</div>' +
+      '<div class="popup-row">⏱️ 建议：' + time + '</div>' +
+      '<div class="popup-row">💡 ' + tips + '</div>' +
+      '<div class="popup-addr">' + addr + '</div></div>';
+    infoWindow.setContent(popup);
+    infoWindow.open(map, [lng, lat]);
+  }
+
+  function addPin(lat, lng, num, color, nameCn, nameEn, group, time, tips, addr) {
+    var html = '<div class="pin-wrap" style="--pin:' + color + '">' +
+      '<div class="pin"></div><div class="pin-num">' + num + '</div></div>';
+    var marker = new AMap.Marker({
+      position: [lng, lat], content: html, offset: new AMap.Pixel(-17, -40), zIndex: 120
+    });
+    marker.on('click', function () {
+      showPopup(lat, lng, num, color, nameCn, nameEn, group, time, tips, addr);
+    });
+    map.add(marker);
+  }
+
+  var PLACES = [{lat:25.05066, lng:102.69855, num:1, color:'#e74c3c', nameCn:`文林街/文化巷`, nameEn:`Wenlin Street / Wenhua Alley`, group:`昆明`, time:`2-3 小时`, tips:`咖啡馆密集，适合下午闲逛；文化巷小吃多`, addr:`中国云南省昆明市五华区文林街 & 文化巷 邮政编码: 650092`},{lat:24.90237, lng:102.78826, num:2, color:'#e74c3c', nameCn:`斗南花市`, nameEn:`Dounan Flower Market`, group:`昆明`, time:`1-2 小时`, tips:`亚洲最大鲜花市场，傍晚拍卖最热闹，鲜花白菜价`, addr:`中国昆明市永兴县交汇处 CN 瑞香西街 与 邮政编码: 650213`},{lat:25.048618, lng:102.701502, num:3, color:'#e74c3c', nameCn:`翠湖公园`, nameEn:`Green Lake Park`, group:`昆明`, time:`1-2 小时`, tips:`市区散步首选，冬季有红嘴鸥，周边老建筑可逛`, addr:`中国云南省昆明市五华区翠湖西路小西门昆明翠湖公园（西门） 邮政编码: 650091`},{lat:25.096559, lng:102.9286198, num:18, color:'#e74c3c', nameCn:`昆明长水国际机场`, nameEn:`Kunming Changshui Intl Airport`, group:`昆明`, time:`提前 2 小时到`, tips:`回程交通点，值机窗口 8/26 早 9 点开放`, addr:`中国云南省昆明市官渡区长水村昆明长水国际机场 邮政编码: 650209`},{lat:25.706183, lng:100.149445, num:5, color:'#3498db', nameCn:`崇圣寺三塔`, nameEn:`Three Pagodas of Chongsheng Temple`, group:`大理`, time:`2-3 小时`, tips:`大理地标，三塔倒影池是最佳拍照位`, addr:`中国大理白族自治州大理市 邮政编码: 671003`},{lat:25.689129, lng:100.161962, num:4, color:'#3498db', nameCn:`大理古城`, nameEn:`Dali Ancient City`, group:`大理`, time:`1 天（建议入住）`, tips:`人民路/复兴路闲逛，晚上酒吧街热闹`, addr:`中国云南省大理白族自治州大理市苍屏街M5Q6+MQ4 邮政编码: 671003`},{lat:25.8006596, lng:100.1927389, num:6, color:'#3498db', nameCn:`洱海生态廊道`, nameEn:`Erhai Ecological Corridor`, group:`大理`, time:`半天骑行`, tips:`纯自行车/步行海景绿道，日出日落绝美`, addr:`中国大理白族自治州大理市洱海`},{lat:25.76995, lng:100.1481, num:7, color:'#3498db', nameCn:`磻溪村S弯`, nameEn:`Panxi Village S-bend`, group:`大理`, time:`1 小时`, tips:`网红S弯打卡点，人少时段清晨最佳`, addr:`中国云南省大理白族自治州大理市磻溪村 邮政编码: 671003`},{lat:26.8718026, lng:100.2358502, num:8, color:'#27ae60', nameCn:`丽江古城`, nameEn:`Lijiang Old Town`, group:`丽江`, time:`1-2 天（建议入住）`, tips:`大水车→四方街→木府，清晨人少最有味道`, addr:`中国云南省丽江市古城区V6CP+P8H 邮政编码: 674100`},{lat:27.0983333, lng:100.175, num:9, color:'#27ae60', nameCn:`玉龙雪山`, nameEn:`Jade Dragon Snow Mountain`, group:`丽江`, time:`1 天`, tips:`需提前订索道票+氧气，大索道直上 4506`, addr:`中国丽江市玉龙纳西族自治县玉龙雪山 邮政编码: 674112`},{lat:27.127186, lng:100.23489, num:10, color:'#27ae60', nameCn:`云杉坪索道`, nameEn:`Yunshanping Ropeway`, group:`丽江`, time:`2-3 小时`, tips:`雪山脚下高山草甸，视野开阔`, addr:`中国云南省丽江市玉龙纳西族自治县46GM+VXC 邮政编码: 674112`},{lat:27.125833, lng:100.244686, num:11, color:'#27ae60', nameCn:`蓝月谷`, nameEn:`Blue Moon Valley`, group:`丽江`, time:`1-2 小时`, tips:`冰川融水湛蓝湖泊，白水台栈道散步`, addr:`中国云南省丽江市玉龙纳西族自治县46GV+8VM 邮政编码: 674106`},{lat:26.8564799, lng:100.2270999, num:12, color:'#27ae60', nameCn:`水光簃`, nameEn:`Shuiguangyi`, group:`丽江`, time:`30 分钟`, tips:`观光车终点站，雪山观景休整点`, addr:`中国云南省丽江市`},{lat:27.299398, lng:100.250923, num:13, color:'#e67e22', nameCn:`上虎跳峡景区`, nameEn:`Upper Tiger Leaping Gorge`, group:`虎跳峡`, time:`2-3 小时`, tips:`江心巨石+木栈道，金沙江最窄处`, addr:`中国云南省丽江市玉龙纳西族自治县大具乡 邮政编码: 674121`},{lat:27.812382, lng:99.704762, num:14, color:'#9b59b6', nameCn:`独克宗古城`, nameEn:`Dukezong Ancient Town`, group:`香格里拉`, time:`半天（建议入住）`, tips:`世界最大转经筒在龟山公园，转三圈祈福`, addr:`中国云南省迪庆藏族自治州香格里拉市RP63+XW2 邮政编码: 674400`},{lat:27.816877, lng:99.705421, num:15, color:'#9b59b6', nameCn:`噶丹·松赞林寺`, nameEn:`Ganden Sumtseling Monastery`, group:`香格里拉`, time:`2-3 小时`, tips:`小布达拉宫，金顶日出极震撼`, addr:`中国云南省迪庆藏族自治州香格里拉市建塘镇 邮政编码: 674400`},{lat:27.8006835, lng:99.9071603, num:16, color:'#9b59b6', nameCn:`普达措国家公园`, nameEn:`Pudacuo National Park`, group:`香格里拉`, time:`半天-1 天`, tips:`属都湖徒步栈道，高原森林草甸`, addr:`中国云南省迪庆藏族自治州香格里拉市建塘镇红坡村双桥东环线云南普达措国家公园 邮政编码: 674400`},{lat:27.86097, lng:99.6439, num:17, color:'#9b59b6', nameCn:`纳帕海`, nameEn:`Napa Lake`, group:`香格里拉`, time:`2 小时`, tips:`依拉草原+纳帕海，环湖观鸟骑马`, addr:`中国云南省迪庆藏族自治州香格里拉市纳帕海 邮政编码: 674400`},]
+
+      PLACES.forEach(function(p) { addPin(p.lat, p.lng, p.num, p.color, p.nameCn, p.nameEn, p.group, p.time, p.tips, p.addr); });
+
+  var routePath = [[102.7015, 25.04862],[100.16196, 25.68913],[100.23585, 26.8718],[100.25092, 27.2994],[99.70476, 27.81238]];
+  var routeLine = new AMap.Polyline({
+    path: routePath,
+    strokeColor: '#c4b5fd', strokeWeight: 4, strokeStyle: 'dashed',
+    strokeOpacity: 0.7, showDir: true, lineJoin: 'round'
+  });
+
+  // 图例 + flyTo
+  var legendHtml = '<div class="legend"><b>🗂️ 按站点分组</b>' + `<div class="legend-item" data-lng="102.7015" data-lat="25.04862">
+      <span class="legend-dot" style="background:#e74c3c"></span>
+      昆明 <span class="legend-count">4 点</span>
+    </div><div class="legend-item" data-lng="100.16196" data-lat="25.68913">
+      <span class="legend-dot" style="background:#3498db"></span>
+      大理 <span class="legend-count">4 点</span>
+    </div><div class="legend-item" data-lng="100.23585" data-lat="26.8718">
+      <span class="legend-dot" style="background:#27ae60"></span>
+      丽江 <span class="legend-count">5 点</span>
+    </div><div class="legend-item" data-lng="100.25092" data-lat="27.2994">
+      <span class="legend-dot" style="background:#e67e22"></span>
+      虎跳峡 <span class="legend-count">1 点</span>
+    </div><div class="legend-item" data-lng="99.70476" data-lat="27.81238">
+      <span class="legend-dot" style="background:#9b59b6"></span>
+      香格里拉 <span class="legend-count">4 点</span>
+    </div>` + '</div>';
+  var legendDom = document.createElement('div');
+  legendDom.innerHTML = legendHtml;
+  legendDom.style.cssText = 'position:absolute;left:12px;bottom:30px;z-index:2000;';
+  document.body.appendChild(legendDom);
+  legendDom.querySelectorAll('.legend-item').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var lng = parseFloat(el.dataset.lng), lat = parseFloat(el.dataset.lat);
+      map.setZoomAndCenter(9, [lng, lat], false, 1200);
+    });
+  });
+
+  // 路线开关（默认隐藏，点击显示）
+  var routeVisible = false;
+  var btn = document.createElement('div');
+  btn.innerHTML = '🧭 行程路线';
+  btn.className = 'route-toggle off';
+  btn.style.cssText = 'position:absolute;right:12px;top:70px;z-index:2000;';
+  btn.onclick = function () {
+    routeVisible = !routeVisible;
+    if (routeVisible) { map.add(routeLine); btn.classList.remove('off'); }
+    else { map.remove(routeLine); btn.classList.add('off'); }
+  };
+  document.body.appendChild(btn);
+
+  // ===== 搜索框（高德 AutoComplete）=====
+  var searchBox = document.createElement('div');
+  searchBox.className = 'search-box';
+  searchBox.innerHTML = '<input id="map-search" placeholder="🔍 搜索地点（如：洱海）…">';
+  document.body.appendChild(searchBox);
+  var searchMarker = null;
+  AMap.plugin(['AMap.AutoComplete'], function () {
+    var auto = new AMap.AutoComplete({
+      input: 'map-search',
+      city: '云南', citylimit: true
+    });
+    auto.on('select', function (e) {
+      var loc = e.poi.location;
+      if (!loc) return;
+      var lng = loc.lng, lat = loc.lat;
+      map.setZoomAndCenter(12, [lng, lat], false, 1200);
+      if (searchMarker) map.remove(searchMarker);
+      searchMarker = new AMap.Marker({
+        position: [lng, lat],
+        content: '<div class="pin-wrap" style="--pin:#f97316"><div class="pin"></div><div class="pin-num">🔍</div></div>',
+        offset: new AMap.Pixel(-17, -40), zIndex: 130
+      });
+      map.add(searchMarker);
+      var popup = '<div class="popup-card">' +
+        '<div class="popup-title"><b>' + e.poi.name + '</b></div>' +
+        '<div class="popup-en">' + (e.poi.district || '') + '</div>' +
+        '<div class="popup-row">📍 ' + (e.poi.address || '') + '</div></div>';
+      infoWindow.setContent(popup);
+      infoWindow.open(map, [lng, lat]);
+    });
+  });
+
+  // ===== 列表面板（18 地点，按站点分组，点击 flyTo）=====
+  var panel = document.createElement('div');
+  panel.className = 'place-panel';
+  var groups = {};
+  PLACES.forEach(function (p) { (groups[p.group] = groups[p.group] || []).push(p); });
+  var panelHtml = '<div class="panel-head"><span>📋 行程清单</span><span class="panel-toggle">▾</span></div><div class="panel-body">';
+  Object.keys(groups).forEach(function (g) {
+    groups[g].sort(function (a, b) { return a.num - b.num; });
+    panelHtml += '<div class="panel-group"><span class="legend-dot" style="background:' + groups[g][0].color + '"></span>' + g + '</div>';
+    groups[g].forEach(function (p) {
+      panelHtml += '<div class="panel-item" data-lat="' + p.lat + '" data-lng="' + p.lng + '" data-num="' + p.num + '" data-color="' + p.color + '">' +
+        '<span class="panel-num" style="background:' + p.color + '">' + p.num + '</span>' + p.nameCn + '</div>';
+    });
+  });
+  panelHtml += '</div>';
+  panel.innerHTML = panelHtml;
+  document.body.appendChild(panel);
+
+  panel.querySelectorAll('.panel-item').forEach(function (el) {
+    el.addEventListener('click', function () {
+      var lat = parseFloat(el.dataset.lat), lng = parseFloat(el.dataset.lng);
+      map.setZoomAndCenter(11, [lng, lat], false, 1200);
+      var num = el.dataset.num, color = el.dataset.color;
+      var p = PLACES.filter(function (x) { return x.lat === lat && x.lng === lng; })[0];
+      if (p) showPopup(p.lat, p.lng, p.num, p.color, p.nameCn, p.nameEn, p.group, p.time, p.tips, p.addr);
+    });
+  });
+
+  // 面板折叠开关
+  panel.querySelector('.panel-head').addEventListener('click', function () {
+    var body = panel.querySelector('.panel-body'), toggle = panel.querySelector('.panel-toggle');
+    if (body.style.display === 'none') { body.style.display = 'block'; toggle.textContent = '▾'; }
+    else { body.style.display = 'none'; toggle.textContent = '▴'; }
+  });
+
+  map.setFitView();
+</script>
+</body>
+</html>
